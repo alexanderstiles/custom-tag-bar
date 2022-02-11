@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import astronautInfo from '../../assets/json/astronauts.json'
 import "./searchTag.css";
 
 export default function SearchTag() {
   // States
+  const [originalPeople, setOriginalPeople] = useState(null)
   const [people, setPeople] = useState(null);
   const [search, setSearch] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -10,6 +12,11 @@ export default function SearchTag() {
 
   // Fetch JSON data from provided link
   useEffect(() => {
+    /*
+    NOTE: I originally used the working fetch code below to get the astronaut names. However
+    when deployed on an HTTPS server (in my case Netlify), the fetch would fail due to Chrome's mixed content blocking (the provided astronaut)
+    api is served over HTTP). Therefore I have saved the json to the local file system.
+   
     fetch("http://api.open-notify.org/astros.json")
       .then((res) => res.json())
       .then(
@@ -21,6 +28,12 @@ export default function SearchTag() {
           console.log(error);
         }
       );
+
+    */
+   const peopleArray = astronautInfo.people
+   const names = peopleArray.map((person) => person.name)
+   setOriginalPeople(names)
+   setPeople(names)
   }, []);
 
   // Event Handlers
@@ -31,6 +44,7 @@ export default function SearchTag() {
     setAdded(copyArray);
     setSearch("");
     setIsFocus(false);
+    setPeople(originalPeople)
   };
 
   const handleDropdownCreate = (searchText) => {
@@ -39,6 +53,7 @@ export default function SearchTag() {
     setAdded(copyArray);
     setSearch("");
     setIsFocus(false);
+    setPeople(originalPeople)
   };
 
   const handleDelete = (deleteIndex) => {
@@ -49,8 +64,17 @@ export default function SearchTag() {
     if (e.key === "Enter" && search !== "") {
       handleDropdownCreate(search);
       e.preventDefault();
+      setIsFocus(true)
     }
   };
+
+  const handleChange = (e) => {
+    setSearch(e.target.value)
+    const filteredPeople = originalPeople.filter((person) => {
+      return person.startsWith(e.target.value)
+    })
+    setPeople(filteredPeople)
+  }
 
   return (
     <>
@@ -69,7 +93,7 @@ export default function SearchTag() {
               </div>
             );
           })}
-        <div>
+        <div style={{width: '100%', padding: '0 5px'}}>
           <textarea
             id="search-field"
             className="Search-input"
@@ -77,7 +101,7 @@ export default function SearchTag() {
             placeholder="&#43; Add tag"
             onFocus={() => setIsFocus(true)}
             onKeyDown={handleKeyDown}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleChange}
           />
           {isFocus && (
             <>
