@@ -1,0 +1,89 @@
+.Search-container {
+  display: flex;
+  font-weight: 400;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  width: 600px;
+  color: black;
+  font-size: 14px;
+  padding: 0px 5px;
+  overflow-x: auto;
+  min-height: 47px;
+}
+
+.Search-input {
+  border: none;
+  width: 100%;
+  min-width: 100px;
+  resize: none;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  padding-top: 20px;
+  margin: 0 5px;
+  white-space: nowrap;
+}
+
+.Search-input:focus::placeholder {
+    color: transparent;
+}
+
+.Search-added {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  margin: 0 5px;
+  color: black;
+  background-color: #f4f6f8;
+  border-radius: 4px;
+  margin: 3px;
+  white-space: nowrap;
+}
+
+.Search-delete {
+  margin: 0 0 0 10px;
+  font-weight: bold;
+  font-size: 18px;
+  color: lightgray;
+  background-color: transparent;
+  border: none;
+  border-radius: 4px;
+}
+
+.Search-delete:hover {
+  background-color: lightgray;
+  color: gray;
+}
+
+.Matches-container {
+  margin-top: 10px;
+  padding: 5px 0px;
+  border-radius: 8px;
+  min-width: 200px;
+  background-color: white;
+  color: black;
+  position: absolute;
+}
+
+.Matches-blocker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  content: " ";
+}
+
+.Matches-row {
+  text-align: left;
+  cursor: pointer;
+  background-color: white;
+  margin: 0;
+  padding: 10px;
+}
+.Matches-row:hover {
+  background-color: #f4f6f8;
+}
