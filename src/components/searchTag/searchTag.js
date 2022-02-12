@@ -73,7 +73,7 @@ export default function SearchTag() {
   const handleChange = (e) => {
     setSearch(e.target.value);
     const filteredPeople = originalPeople.filter((person) => {
-      return person.toLowerCase().startsWith(e.target.value);
+      return person.toLowerCase().startsWith(e.target.value.toLowerCase());
     });
     setPeople(filteredPeople);
   };
