@@ -10,7 +10,11 @@
   font-size: 14px;
   padding: 0px 5px;
   overflow-x: auto;
-  min-height: 47px;
+  min-height: 60px;
+}
+
+.Search-transition-container {
+  display: flex;
 }
 
 .Search-input {
@@ -33,7 +37,7 @@
 .Search-added {
   display: flex;
   align-items: center;
-  padding: 5px 10px;
+  padding: 0px 10px;
   margin: 0 5px;
   color: black;
   background-color: #f4f6f8;
@@ -41,6 +45,24 @@
   margin: 3px;
   white-space: nowrap;
 }
+
+.Added-enter {
+  opacity: 0;
+}
+.Added-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.Added-exit {
+  display: none;
+}
+
+.Added-exit-active {
+  display: none;
+}
+
+
 
 .Search-delete {
   margin: 0 0 0 10px;
@@ -65,6 +87,22 @@
   background-color: white;
   color: black;
   position: absolute;
+}
+
+.Matches-animate-enter {
+  opacity: 0;
+}
+.Matches-animate-enter-active {
+  opacity: 1;
+  transition: opacity 150ms ease-in;
+}
+
+.Matches-animate-exit {
+  display: none;
+}
+
+.Matches-animate-exit-active {
+  display: none;
 }
 
 .Matches-blocker {

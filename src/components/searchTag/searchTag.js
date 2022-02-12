@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import astronautInfo from '../../assets/json/astronauts.json'
+// Necessary library for animation as given in React docs: https://reactjs.org/docs/animation.html
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import astronautInfo from "../../assets/json/astronauts.json";
 import "./searchTag.css";
 
 export default function SearchTag() {
   // States
-  const [originalPeople, setOriginalPeople] = useState(null)
+  const [originalPeople, setOriginalPeople] = useState(null);
   const [people, setPeople] = useState(null);
   const [search, setSearch] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -30,10 +32,10 @@ export default function SearchTag() {
       );
 
     */
-   const peopleArray = astronautInfo.people
-   const names = peopleArray.map((person) => person.name)
-   setOriginalPeople(names)
-   setPeople(names)
+    const peopleArray = astronautInfo.people;
+    const names = peopleArray.map((person) => person.name);
+    setOriginalPeople(names);
+    setPeople(names);
   }, []);
 
   // Event Handlers
@@ -44,7 +46,7 @@ export default function SearchTag() {
     setAdded(copyArray);
     setSearch("");
     setIsFocus(false);
-    setPeople(originalPeople)
+    setPeople(originalPeople);
   };
 
   const handleDropdownCreate = (searchText) => {
@@ -53,7 +55,7 @@ export default function SearchTag() {
     setAdded(copyArray);
     setSearch("");
     setIsFocus(false);
-    setPeople(originalPeople)
+    setPeople(originalPeople);
   };
 
   const handleDelete = (deleteIndex) => {
@@ -64,36 +66,43 @@ export default function SearchTag() {
     if (e.key === "Enter" && search !== "") {
       handleDropdownCreate(search);
       e.preventDefault();
-      setIsFocus(true)
+      setIsFocus(true);
     }
   };
 
   const handleChange = (e) => {
-    setSearch(e.target.value)
+    setSearch(e.target.value);
     const filteredPeople = originalPeople.filter((person) => {
-      return person.startsWith(e.target.value)
-    })
-    setPeople(filteredPeople)
-  }
+      return person.startsWith(e.target.value);
+    });
+    setPeople(filteredPeople);
+  };
 
   return (
     <>
       <div className="Search-container">
-        {added.length > 0 &&
-          added.map((name, index) => {
+        <TransitionGroup className="Search-transition-container">
+          {added.map((name, index) => {
             return (
-              <div key={`added-${name}-${index}`} className="Search-added">
-                {name}{" "}
-                <button
-                  className="Search-delete"
-                  onClick={() => handleDelete(index)}
-                >
-                  &times;
-                </button>
-              </div>
+              <CSSTransition
+                key={`added-${name}-${index}`}
+                classNames="Added"
+                timeout={300}
+              >
+                <div className="Search-added">
+                  <p>{name} </p>
+                  <button
+                    className="Search-delete"
+                    onClick={() => handleDelete(index)}
+                  >
+                    &times;
+                  </button>
+                </div>
+              </CSSTransition>
             );
           })}
-        <div style={{width: '100%', padding: '0 5px'}}>
+        </TransitionGroup>
+        <div style={{ width: "100%", padding: "0 5px" }}>
           <textarea
             id="search-field"
             className="Search-input"
@@ -103,36 +112,41 @@ export default function SearchTag() {
             onKeyDown={handleKeyDown}
             onChange={handleChange}
           />
-          {isFocus && (
-            <>
-              <div
-                className="Matches-blocker"
-                onClick={() => setIsFocus(false)}
-              />
-              <div className="Matches-container">
-                {people?.map((name, index) => {
-                  return (
+            <CSSTransition
+              in={isFocus}
+              timeout={150}
+              classNames="Matches-animate"
+              unmountOnExit
+            >
+              <div>
+                <div
+                  className="Matches-blocker"
+                  onClick={() => setIsFocus(false)}
+                />
+                <div className="Matches-container">
+                  {people?.map((name, index) => {
+                    return (
+                      <p
+                        key={`people-${index}`}
+                        className="Matches-row"
+                        onClick={handleDropdownClick}
+                      >
+                        {name}
+                      </p>
+                    );
+                  })}
+                  {search !== "" && (
                     <p
-                      key={`people-${index}`}
                       className="Matches-row"
-                      onClick={handleDropdownClick}
+                      onClick={() => handleDropdownCreate(search)}
                     >
-                      {name}
+                      <span style={{ color: "gray" }}>Create </span>
+                      {search}
                     </p>
-                  );
-                })}
-                {search !== "" && (
-                  <p
-                    className="Matches-row"
-                    onClick={() => handleDropdownCreate(search)}
-                  >
-                    <span style={{ color: "gray" }}>Create </span>
-                    {search}
-                  </p>
-                )}
+                  )}
+                </div>
               </div>
-            </>
-          )}
+            </CSSTransition>
         </div>
       </div>
     </>
