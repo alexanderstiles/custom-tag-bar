@@ -16,7 +16,7 @@ export default function SearchTag() {
   useEffect(() => {
     /*
     NOTE: I originally used the working fetch code below to get the astronaut names. However
-    when deployed on an HTTPS server (in my case Netlify), the fetch would fail due to Chrome's mixed content blocking (the provided astronaut)
+    when deployed on an HTTPS server (in my case Netlify), the fetch would fail due to Chrome's mixed content blocking policy (the provided astronaut)
     api is served over HTTP). Therefore I have saved the json to the local file system.
    
     fetch("http://api.open-notify.org/astros.json")
@@ -73,7 +73,7 @@ export default function SearchTag() {
   const handleChange = (e) => {
     setSearch(e.target.value);
     const filteredPeople = originalPeople.filter((person) => {
-      return person.startsWith(e.target.value);
+      return person.toLowerCase().startsWith(e.target.value);
     });
     setPeople(filteredPeople);
   };
